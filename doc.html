@@ -1,0 +1,166 @@
+<!doctype html>
+
+<!-- Copyright (c) 2024, the University Corporation for Atmospheric Research (UCAR). -->
+
+<html>
+    
+<head> 
+
+<style>
+    h1 {font-family:Verdana,Geneva,sans-serif;}
+    h2 {font-family:Verdana,Geneva,sans-serif;}
+    h3 {font-family:Verdana,Geneva,sans-serif;}
+    h4 {font-family:Verdana,Geneva,sans-serif;}
+    li {font-family:Verdana,Geneva,sans-serif;}
+    b {font-family:Verdana,Geneva,sans-serif;}
+    p.top {max-width:875px; font-family:Verdana,Geneva,sans-serif;}
+    p {max-width:98%; font-family:Verdana,Geneva,sans-serif;}
+    div.header {background-color:lightgray; max-width:900px; margin-top:30px; margin-bottom:10px; cursor:pointer;}
+    div.subheader {background-color:lightgray; max-width:870px; margin-top:30px; margin-bottom:10px; cursor:pointer;}
+    div.hintheader {background-color:lightblue; max-width:840px; margin-top:30px; margin-bottom:10px; cursor:pointer;}
+    div.section {max-width:900px; display:none; margin-left:30px;}
+    div.subsection {max-width:900px; display:none; margin-left:30px;}
+    div.hint {max-width:900px; display:none; margin-left:30px;}
+    div.outlined {max-width:870px; padding-left:15px; padding-right:15px; border-style:solid; border-width:thin; border-color:red;}
+    pre.terminal {font-family:"Courier New",Courier,monospace; font-weight:bold; margin-left:15px;}
+    em.terminal {font-family:"Courier New",Courier,monospace; font-weight:bold; font-style:normal;}
+    em.highlight {background-color: yellow; font-style:normal;}
+    em.prompt {user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; font-style:normal;}
+    b.red {font-family:"Courier New",Courier,monospace; font-weight:bold; color:#ff0000;}
+</style>
+
+<title>MPAS/DART Guide</title>
+
+<script type="text/javascript">
+function show(id)
+{
+    var e = document.getElementById(id);
+
+    if (e.style.display == "block") {
+        e.style.display = "none";
+    }
+    else {
+        e.style.display = "block";
+    }
+}
+
+function jump(sectionid='')
+{
+    if (sectionid == '') {
+        var params = new URLSearchParams(window.location.search);
+        if (params.has('section')) {
+            sectionid = params.get('section');
+        }
+    }
+
+    if (sectionid == '') {
+        return;
+    }
+
+    var section = document.getElementById(sectionid);
+
+    while (section != null && section.id != '') {
+        show(section.id);
+        section = section.parentNode;
+    }
+    document.getElementById(sectionid+'-header').scrollIntoView({behavior: 'smooth'});
+}
+</script>
+
+</head>
+
+<body onLoad="jump()">
+
+<h1>Welcome to the MPAS/DART Guide</h1>
+
+<p class="top">
+This web page is intended to help a new user set up the
+DART data assimilation system with the 
+<a href="https://ncar.ucar.edu/what-we-offer/models/model-prediction-across-scales-mpas">
+Model for Prediction Across Scales (MPAS)</a>.
+The details of the steps in each section can be viewed by clicking on the headers.
+For the description of the system, go to the overview in Section 3.
+</p>
+
+<p class="top">
+While going through this guide you may find it helpful to have a copy of the DART On-line
+documentation open in another window.
+Click <a href="https://docs.dart.ucar.edu/en/latest/" target="_blank">here</a> to open the DART Documentation
+in a new window.
+<br><br>
+
+You may also find it helpful to have the
+MPAS-Atmosphere Users' Guide available in another window as well.
+Click <a href="http://www2.mmm.ucar.edu/projects/mpas/mpas_atmosphere_users_guide_8.0.pdf" target="_blank">here</a> 
+to open the MPAS Users' Guide (for Version 8.0) in a new window.
+</p>
+
+
+<!-- ============================================================================== -->
+<!-- ============================================================================== -->
+<div class="header" onClick="show('prerequisites')">
+<h2 id="prerequisites-header">0. Prerequisites</h2>
+</div>
+
+<div id="prerequisites" class="section">
+<p>
+DART is tailored to work with the unchanged MPAS Atmosphere model, so before starting to 
+install and run DART you should follow the steps to download and run MPAS-A first.
+Once that is complete, then the next step is to download DART and build it.
+Information about installing and running MPAS-A can be found at 
+<a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2024/index.html" target="_blank">
+https://www2.mmm.ucar.edu/projects/mpas/tutorial/Virtual2024/index.html</a>.
+<p>
+DART requires the NetCDF libraries, an MPI-2 implementation, and access to
+Matlab to run the diagnostic routines.  The scripting is mostly in C-Shell with some
+Bash.
+<p>
+If you have access to the NSF NCAR <a href="https://arc.ucar.edu/knowledge_base/74317833" target="_blank">derecho</a> 
+HPC system, DART will run there with the addition of loading the HDF module (see below for more details.)
+</p>
+You can obtain MPAS/DART scripts used for tutorial at 
+<a href="https://github.com/junpark-mmm/mpas-dart_tutorial_scripts" target="_blank">
+https://github.com/junpark-mmm/mpas-dart_tutorial_scripts</a>.
+These scripts were tested with 10 members over global ~240 km global domain (x1.10242) with MPAS-A version 8.2.0
+at the derecho and local Ubuntu LTS22 machine (Ryzen 5600h, 24GB) over 7 day cycle period. We provide you tutorial_data
+tgz file can be used for testing of MPAS/DART. Please check the link.
+</p>
+</div>
+
+<pre class="terminal">
+$ git clone https://github.com/NCAR/DART.git  DART
+</pre>
+
+<div class="header" onClick="show('more')">
+<h2>6. More help </h2>
+</div>
+
+<div id="more" class="subsection">
+
+<p>
+Information about installing and running MPAS-A can be found at 
+<a href="https://www2.mmm.ucar.edu/projects/mpas/tutorial/v8.0/index.html" target="_blank">
+https://www2.mmm.ucar.edu/projects/mpas/tutorial/v8.0/index.html</a>.
+</p>
+
+<p>
+The DART online documentation 
+<a href="https://docs.dart.ucar.edu/en/latest/index.html">
+https://docs.dart.ucar.edu/en/latest/index.html</a>
+has extensive information on running DART as well as
+information about Data Assimilation theory.
+</p>
+
+<p>
+Also, for more details or any questions, please contact Soyoung Ha (syha@ucar.edu) or dart@ucar.edu.
+</p>
+
+
+</div>
+
+</div>
+
+
+</body>
+
+</html>
